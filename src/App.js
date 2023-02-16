@@ -3,8 +3,8 @@ import { GoogleLoginBtn } from './components/GoogleLoginBtn';
 import { gapi } from 'gapi-script';
 import { useEffect } from 'react';
 
-const CLIENT_ID='554296606023-876meuumt5vmou76tep6guchu2tucqet.apps.googleusercontent.com'
-const API_KEY='AIzaSyCW2mXqEdp0gZ8ov4UCUvnNANJmu9Hm-kg'
+const CLIENT_ID=process.env.REACT_APP_CLIENT_ID;
+const API_KEY=process.env.REACT_APP_API_KEY;
 const SCOPES='https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file'
 
 function App() {
