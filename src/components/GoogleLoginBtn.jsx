@@ -1,15 +1,19 @@
 import React from 'react'
-import { GoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
+
 
 export const GoogleLoginBtn = () => {
+  
+  const login = useGoogleLogin({
+    scope: process.env.REACT_APP_SCOPES,
+    onSuccess: tokenResponse => console.log(tokenResponse),
+  });
+
   return (
-    <GoogleLogin
-        onSuccess={credentialResponse => {
-            console.log(credentialResponse);
-        }}
-        onError={() => {
-            console.log('Login Failed');
-        }}
-    />
+    <button onClick={() => login()}>
+      Sign in with Google 🚀{' '}
+    </button>
   )
 }
+
+

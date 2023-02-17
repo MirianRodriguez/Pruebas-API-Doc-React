@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 const CLIENT_ID=process.env.REACT_APP_CLIENT_ID;
 const API_KEY=process.env.REACT_APP_API_KEY;
-const SCOPES='https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file'
+const SCOPES=process.env.REACT_APP_SCOPES;
 
 function App() {
 
@@ -14,32 +14,46 @@ function App() {
       gapi.client.init({ 
         apiKey: API_KEY,
         clientId: CLIENT_ID,
-        scope: SCOPES,    
+        scope: SCOPES,
+        discoveryDocs:["https://docs.googleapis.com/$discovery/rest?version=v1"],    
       })
     };
     gapi.load('client:auth2', start);
   })
 
-  const createFile = (title) => {
-    //const accessToken = gapi.auth.getToken().access_token;
-    const accessToken = gapi.client.getToken().access_token;
-    console.log("access token" + accessToken);
-    fetch('https://docs.googleapis.com/v1/documents?title='+title, {
-      method:"POST",
-      headers: { 'Authorization': 'Bearer ' + accessToken},
-    }).then( (res) => {
-      return res.json();
-    }).then(function(val){
-      console.log(val);
-      console.log(val.documentId);
-      window.open('https://docs.google.com/document/d/' +val.documentId+ '/edit', '_blank');
-    });
+  const execute = () => {
+    console.log(gapi.client.docs);
+    return gapi.client.docs.documents.create({
+      "resource": {
+        "title": "mi titulo",
+        "body": {
+          "content": [
+            {
+              "paragraph": {
+                "elements": [
+                  {
+                    "textRun": {
+                      "content": "mi texto genial"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response);
+              },
+              function(err) { console.error("Execute error", err); });
   }
 
   return (
     <div className="App">
       <GoogleLoginBtn/>
-      <button onClick={()=>createFile("Mi documento desde React")}>
+      <button onClick={execute}>
         Crear documento
       </button>
     </div>
