@@ -18,33 +18,18 @@ function App() {
         discoveryDocs:["https://docs.googleapis.com/$discovery/rest?version=v1"],    
       })
     };
-    gapi.load('client:auth2', start);
+    gapi.load('client', start); 
   })
+
 
   const execute = () => {
     console.log(gapi.client.docs);
     return gapi.client.docs.documents.create({
       "resource": {
-        "title": "mi titulo",
-        "body": {
-          "content": [
-            {
-              "paragraph": {
-                "elements": [
-                  {
-                    "textRun": {
-                      "content": "mi texto genial"
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
+        "title": "mi titulo"
       }
     })
         .then(function(response) {
-                // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
               },
               function(err) { console.error("Execute error", err); });
